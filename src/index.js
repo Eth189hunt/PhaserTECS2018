@@ -26,9 +26,11 @@ var Space = new Phaser.Class({
 	create: function (){
 		this.me = this.physics.add.sprite(400, 550, 'ship');
 		
+		//Create baddies
 		for (var gb = 0; gb < 5; gb++){
-			this.bads.push(this.add.sprite(200 + gb * 100, 300, 'shipB'));
+			this.bads.push(this.physics.add.sprite(200 + gb * 100, 0, 'shipB'));
 			this.bads[gb].setAngle(180);
+			this.bads[gb].setVelocityY(50);
 		}
 		this.laser = this.add.group();
 	
@@ -61,20 +63,18 @@ var Space = new Phaser.Class({
 				
 				for (var i = 0; i < this.scene.bads.length; i++ ){
 					var bad = this.scene.bads[i];
-					if (this.y > bad.y - 40 && this.y < bad.y + 40 && this.x > bad.x - 40 && this.x < bad.x + 40) {
+					if (this.active && this.y > bad.y - 40 && this.y < bad.y + 40 && this.x > bad.x - 40 && this.x < bad.x + 40) {
 						bad.destroy();
 						this.scene.bads.splice(i, 1);
+						this.setActive(false);
+						this.setVisible(false);
 						i = 0;
 					}
 				}
 				
 				this.born += delta;
 			
-				if (this.born > 1000){
-					this.setActive(false);
-					this.setVisible(false);
-				}
-				if (this.born > 1000){
+				if (this.born > 1500){
 					this.setActive(false);
 					this.setVisible(false);
 				}
@@ -121,6 +121,14 @@ var Space = new Phaser.Class({
 		}
 		if (this.me.x > 740){
 			this.me.x = 740;
+		}
+		for (var i2 = 0; i2 < this.bads.length; i2++ ){
+			if (this.bads[i2].y >= 550){
+				
+				this.me.destroy();
+				document.location.reload();
+				
+			}
 		}
 	},
 
@@ -212,6 +220,7 @@ var Menu = new Phaser.Class ({
 		this.input.once('pointerdown', function (event) {
 			console.log('hi');
 			this.scene.start('space');
+			//this.scene.switch('space');
 		
 		}, this);
 	}
