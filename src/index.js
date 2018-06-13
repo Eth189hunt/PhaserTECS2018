@@ -6,6 +6,7 @@ var Space = new Phaser.Class({
 			cursors: null,
 			thrust: null,
 			flares: null,
+			bad: null,
 			bullets: null,
 			lastFired: 0,
 			text: null,
@@ -26,7 +27,10 @@ var Space = new Phaser.Class({
 		this.me = this.add.sprite(400, 550, 'ship');
 		this.bad = this.add.sprite(400, 300, 'shipB');
 		this.laser = this.add.group();
-	
+		
+		var lx;
+		var ls;//start
+		var le;//end
 	
 		this.me.displayWidth = 80; 
 		this.me.displayHeight = 80;
@@ -53,11 +57,20 @@ var Space = new Phaser.Class({
 				this.born = 0;
 				this.setPosition(me.x,me.y);
 				
+				lx = me.x;
+				ls = me.y;
+				
 				this.speed = Phaser.Math.GetSpeed(500,-1);
 				//this.velocity.y = -300;
-			},
+			}, 
 			update: function (time, delta){
 				this.y += this.speed * delta;
+				
+				le = this.y;
+				var bad = this.scene.bad;
+				if (this.y > bad.y - 40 && this.y < bad.y + 40 && this.x > bad.x - 40 && this.x > bad.x + 40) {
+					bad.destroy();
+				}
 				
 				this.born += delta;
 			
@@ -78,7 +91,8 @@ var Space = new Phaser.Class({
 		
 		}, this);
 		
-		this.physics.add.collider(this.me, Bullet);
+		//this.physics.add.collider(this.bad, this.bullets);
+		
 	},
 	update: function (time, delta){
 		if(this.cursors.space.isDown && time > this.lastFired){
