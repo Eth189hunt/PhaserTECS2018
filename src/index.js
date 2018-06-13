@@ -4,9 +4,15 @@ var Space = new Phaser.Class({
 	
 	Extends: Phaser.Scene,
 			cursors: null,
+			hs: null,
 			thrust: null,
 			flares: null,
 			bads: [],
+			random: null,
+			cr: null,
+			cl: null,
+			w: 0,
+			r: null,
 			bullets: null,
 			lastFired: 0,
 			text: null,
@@ -25,13 +31,15 @@ var Space = new Phaser.Class({
 	
 	create: function (){
 		this.me = this.physics.add.sprite(400, 550, 'ship');
-		
-		//Create baddies
+	
+	//Create baddies
 		for (var gb = 0; gb < 5; gb++){
 			this.bads.push(this.physics.add.sprite(200 + gb * 100, 0, 'shipB'));
 			this.bads[gb].setAngle(180);
 			this.bads[gb].setVelocityY(50);
 		}
+		this.w++;
+		
 		this.laser = this.add.group();
 	
 		this.me.displayWidth = 80; 
@@ -83,7 +91,10 @@ var Space = new Phaser.Class({
 		//bullets
 		this.bullets = this.add.group({classType: Bullet, runChildUpdate: true})
 	
-		this.cursors = this.input.keyboard.createCursorKeys();	
+		this.cursors = this.input.keyboard.createCursorKeys();
+		this.r = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCode.R);
+		
+		
 		console.log("cddgdghjgbooo");
 		/*this.input.on('pointermove', function (pointer) {
 			
@@ -126,9 +137,47 @@ var Space = new Phaser.Class({
 			if (this.bads[i2].y >= 550){
 				
 				this.me.destroy();
+				
 				document.location.reload();
 				
 			}
+		}
+		if (this.w == 1){
+		if (this.bads.length == 0){
+			this.random = Phaser.Math.Between(3, 8);
+			if(this.random % 2 == 1){
+				this.bads.push(this.physics.add.sprite(400, 0, 'shipB'));
+				this.bads[0].setAngle(180);
+				this.bads[0].setVelocityY(50);
+				
+				this.random = (this.random - 1) /2;
+				
+				this.cr = this.random;
+				this.cl = this.random + this.cr + 1;
+				
+				//Create baddies
+				for (var gb1 = 1; gb1 < this.cr; gb1++){
+					this.bads.push(this.physics.add.sprite(300 + gb1 * -90, 0, 'shipB'));
+					this.bads[gb1].setAngle(180);
+					this.bads[gb1].setVelocityY(50);
+				}
+				//Create baddies
+				for (var gb2 = this.cr + 1; gb2 < this.cl; gb2++){
+					this.bads.push(this.physics.add.sprite(500 + gb2 * 90, 0, 'shipB'));
+					this.bads[gb2].setAngle(180);
+					this.bads[gb2].setVelocityY(50);
+				}
+				
+			}else{
+				for (var gb3 = 0; gb3 < this.random; gb3++){
+					this.bads.push(this.physics.add.sprite(100 + gb3 * 90, 0, 'shipB'));
+					this.bads[gb3].setAngle(180);
+					this.bads[gb3].setVelocityY(50);
+				}
+			}
+		}}
+		if (this.r.isDown){
+			document.location.reload();
 		}
 	},
 
