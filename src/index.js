@@ -1,10 +1,12 @@
 import 'phaser';
 //PhaserTECS2018
+var hs = 0;
+var hsS;
+var highscore;
 var Space = new Phaser.Class({
 	
 	Extends: Phaser.Scene,
 			cursors: null,
-			hs: null,
 			thrust: null,
 			flares: null,
 			bads: [],
@@ -12,7 +14,6 @@ var Space = new Phaser.Class({
 			cr: null,
 			cl: null,
 			w: 0,
-			r: null,
 			bullets: null,
 			lastFired: 0,
 			text: null,
@@ -77,6 +78,8 @@ var Space = new Phaser.Class({
 						this.setActive(false);
 						this.setVisible(false);
 						i = 0;
+						hs++;
+						console.log(hs);
 					}
 				}
 				
@@ -92,7 +95,7 @@ var Space = new Phaser.Class({
 		this.bullets = this.add.group({classType: Bullet, runChildUpdate: true})
 	
 		this.cursors = this.input.keyboard.createCursorKeys();
-		this.r = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCode.R);
+		this.r = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 		
 		
 		console.log("cddgdghjgbooo");
@@ -137,7 +140,11 @@ var Space = new Phaser.Class({
 			if (this.bads[i2].y >= 550){
 				
 				this.me.destroy();
-				
+				hs.toString();
+				if(hs < highscore ){
+					hs = highscore;
+				}
+				document.cookie = hs.toString();
 				document.location.reload();
 				
 			}
@@ -145,38 +152,18 @@ var Space = new Phaser.Class({
 		if (this.w == 1){
 		if (this.bads.length == 0){
 			this.random = Phaser.Math.Between(3, 8);
-			if(this.random % 2 == 1){
-				this.bads.push(this.physics.add.sprite(400, 0, 'shipB'));
-				this.bads[0].setAngle(180);
-				this.bads[0].setVelocityY(50);
-				
-				this.random = (this.random - 1) /2;
-				
-				this.cr = this.random;
-				this.cl = this.random + this.cr + 1;
-				
-				//Create baddies
-				for (var gb1 = 1; gb1 < this.cr; gb1++){
-					this.bads.push(this.physics.add.sprite(300 + gb1 * -90, 0, 'shipB'));
-					this.bads[gb1].setAngle(180);
-					this.bads[gb1].setVelocityY(50);
-				}
-				//Create baddies
-				for (var gb2 = this.cr + 1; gb2 < this.cl; gb2++){
-					this.bads.push(this.physics.add.sprite(500 + gb2 * 90, 0, 'shipB'));
-					this.bads[gb2].setAngle(180);
-					this.bads[gb2].setVelocityY(50);
-				}
-				
-			}else{
-				for (var gb3 = 0; gb3 < this.random; gb3++){
-					this.bads.push(this.physics.add.sprite(100 + gb3 * 90, 0, 'shipB'));
-					this.bads[gb3].setAngle(180);
-					this.bads[gb3].setVelocityY(50);
-				}
+			for (var gb3 = 0; gb3 < this.random; gb3++){
+				this.bads.push(this.physics.add.sprite(100 + gb3 * 90, 0, 'shipB'));
+				this.bads[gb3].setAngle(180);
+				this.bads[gb3].setVelocityY(50);
 			}
 		}}
 		if (this.r.isDown){
+			hs.toString();
+			if(hs < highscore ){
+				hs = highscore;
+			}
+			document.cookie = hs.toString();
 			document.location.reload();
 		}
 	},
@@ -195,7 +182,11 @@ var Menu = new Phaser.Class ({
 	
 	preload: function ()
 	{
-		    var progressBar = this.add.graphics();
+			
+			highscore = document.cookie;
+			console.log(highscore);
+			
+			var progressBar = this.add.graphics();
 			var progressBox = this.add.graphics();
 			progressBox.fillStyle(0x222222, 0.8);
 			progressBox.fillRect(240, 270, 320, 50);
@@ -244,8 +235,18 @@ var Menu = new Phaser.Class ({
                     fill: '#ff0000'
                 }
             });
- 
             assetText.setOrigin(0.5, 0.5);
+			
+			var highscoreText = this.make.text({
+                x: width = 125,
+                y: height = 25,
+                text: 'High Score:' + highscore,
+                style: {
+                    font: '18px monospace',
+                    fill: '#ffffff'
+                }
+            });
+            highscoreText.setOrigin(0.5, 0.5);
             
             this.load.on('progress', function (value) {
                 percentText.setText(parseInt(value * 100) + '%');
