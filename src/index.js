@@ -171,9 +171,9 @@ var Menu = new Phaser.Class ({
                 assetText.destroy();
             });
             
-            this.load.image('logo', 'assets/zenvalogo.png');
+            this.load.image('logo', 'transparent.png');
             for (var i = 0; i < 10; i++) {
-                this.load.image('logo'+i, 'assets/zenvalogo.png');
+                this.load.image('logo'+i, 'transparent.png');
             }
 	},
 	
