@@ -52,16 +52,12 @@ var Space = new Phaser.Class({
 				this.born = 0;
 				this.setPosition(me.x,me.y);
 				
-				lx = me.x;
-				ls = me.y;
-				
 				this.speed = Phaser.Math.GetSpeed(500,-1);
 				//this.velocity.y = -300;
 			}, 
 			update: function (time, delta){
 				this.y += this.speed * delta;
 				
-				le = this.y;
 				for (var i = 0; i < this.scene.bads.length; i++ ){
 					var bad = this.scene.bads[i];
 					if (this.y > bad.y - 40 && this.y < bad.y + 40 && this.x > bad.x - 40 && this.x < bad.x + 40) {
