@@ -1,5 +1,5 @@
 import 'phaser';
-
+//PhaserTECS2018
 var Space = new Phaser.Class({
 	
 	Extends: Phaser.Scene,
@@ -77,6 +77,8 @@ var Space = new Phaser.Class({
 			this.me.x = Phaser.Math.Clamp(pointer.x, 52, 748);
 		
 		}, this);
+		
+		this.physics.add.collider(this.me, Bullet);
 	},
 	update: function (time, delta){
 		if(this.cursors.space.isDown && time > this.lastFired){
@@ -193,6 +195,12 @@ var config = {
 	height: 600,
 	backgroundColor: '#000000',
 	parent: 'phaser-example',
+	physics: {
+        default: 'arcade',
+        arcade: {
+            debug: true
+        }
+    },
 	scene: [Menu, Space]
 };
 var game = new Phaser.Game(config);
