@@ -171,9 +171,9 @@ var Menu = new Phaser.Class ({
                 assetText.destroy();
             });
             
-            this.load.image('logo', 'transparent.png');
+            this.load.image('logo', 'assets/transparent2.png');
             for (var i = 0; i < 10; i++) {
-                this.load.image('logo'+i, 'transparent.png');
+                this.load.image('logo'+i, 'assets/transparent2.png');
             }
 	},
 	
