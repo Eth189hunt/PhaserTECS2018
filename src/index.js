@@ -6,7 +6,7 @@ var Space = new Phaser.Class({
 			cursors: null,
 			thrust: null,
 			flares: null,
-			bad: null,
+			bads: [],
 			bullets: null,
 			lastFired: 0,
 			text: null,
@@ -25,21 +25,16 @@ var Space = new Phaser.Class({
 	
 	create: function (){
 		this.me = this.add.sprite(400, 550, 'ship');
-		this.bad = this.add.sprite(400, 300, 'shipB');
+		for (var gb = 0; gb < 5; gb++){
+			this.bads.push(this.add.sprite(200 + gb * 100, 300, 'shipB'));
+			this.bads[gb].setAngle(180);
+		}
 		this.laser = this.add.group();
-		
-		var lx;
-		var ls;//start
-		var le;//end
 	
 		this.me.displayWidth = 80; 
 		this.me.displayHeight = 80;
 		this.me.setAngle(180);
 		console.log(this.bad);
-	
-		this.bad.displayWidth = 80; 
-		this.bad.displayHeight = 80;
-		this.bad.setAngle(180);
 		var Bullet = new Phaser.Class({
 			Extends: Phaser.GameObjects.Image,
 			
@@ -67,9 +62,13 @@ var Space = new Phaser.Class({
 				this.y += this.speed * delta;
 				
 				le = this.y;
-				var bad = this.scene.bad;
-				if (this.y > bad.y - 40 && this.y < bad.y + 40 && this.x > bad.x - 40 && this.x < bad.x + 40) {
-					bad.destroy();
+				for (var i = 0; i < this.scene.bads.length; i++ ){
+					var bad = this.scene.bads[i];
+					if (this.y > bad.y - 40 && this.y < bad.y + 40 && this.x > bad.x - 40 && this.x < bad.x + 40) {
+						bad.destroy();
+						this.scene.bads.splice(i, 1);
+						i = 0;
+					}
 				}
 				
 				this.born += delta;
