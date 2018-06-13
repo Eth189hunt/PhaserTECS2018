@@ -35,7 +35,7 @@ var Space = new Phaser.Class({
 		this.me.displayWidth = 80; 
 		this.me.displayHeight = 80;
 		this.me.setAngle(180);
-		console.log(this.me);
+		console.log(this.bad);
 	
 		this.bad.displayWidth = 80; 
 		this.bad.displayHeight = 80;
@@ -68,7 +68,7 @@ var Space = new Phaser.Class({
 				
 				le = this.y;
 				var bad = this.scene.bad;
-				if (this.y > bad.y - 40 && this.y < bad.y + 40 && this.x > bad.x - 40 && this.x > bad.x + 40) {
+				if (this.y > bad.y - 40 && this.y < bad.y + 40 && this.x > bad.x - 40 && this.x < bad.x + 40) {
 					bad.destroy();
 				}
 				
