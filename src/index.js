@@ -24,7 +24,8 @@ var Space = new Phaser.Class({
 	},
 	
 	create: function (){
-		this.me = this.add.sprite(400, 550, 'ship');
+		this.me = this.physics.add.sprite(400, 550, 'ship');
+		
 		for (var gb = 0; gb < 5; gb++){
 			this.bads.push(this.add.sprite(200 + gb * 100, 300, 'shipB'));
 			this.bads[gb].setAngle(180);
@@ -73,6 +74,10 @@ var Space = new Phaser.Class({
 					this.setActive(false);
 					this.setVisible(false);
 				}
+				if (this.born > 1000){
+					this.setActive(false);
+					this.setVisible(false);
+				}
 			}
 		})
 		//bullets
@@ -80,11 +85,11 @@ var Space = new Phaser.Class({
 	
 		this.cursors = this.input.keyboard.createCursorKeys();	
 		console.log("cddgdghjgbooo");
-		this.input.on('pointermove', function (pointer) {
+		/*this.input.on('pointermove', function (pointer) {
 			
 			this.me.x = Phaser.Math.Clamp(pointer.x, 52, 748);
 		
-		}, this);
+		}, this);*/
 		
 		//this.physics.add.collider(this.bad, this.bullets);
 		
@@ -97,8 +102,25 @@ var Space = new Phaser.Class({
 			if(bullet){
 				bullet.fire(this.me);
 			
-				this.lastFired = time + 175;
+				this.lastFired = time + 350;
 			}
+		}
+		if (this.cursors.left.isDown)
+		{
+			this.me.body.setVelocityX(-300);
+		}
+		else if (this.cursors.right.isDown)
+		{
+			this.me.body.setVelocityX(300);
+		}
+		else{
+			this.me.body.setVelocityX(0);
+		}
+		if (this.me.x < 60){
+			this.me.x = 60;
+		}
+		if (this.me.x > 740){
+			this.me.x = 740;
 		}
 	},
 
@@ -203,7 +225,7 @@ var config = {
 	physics: {
         default: 'arcade',
         arcade: {
-            debug: true
+            debug: false
         }
     },
 	scene: [Menu, Space]
