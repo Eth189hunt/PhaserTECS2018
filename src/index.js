@@ -3,6 +3,7 @@ import 'phaser';
 var hs = 0;
 var hsS;
 var highscore;
+var erN = 0;
 var Space = new Phaser.Class({
 	
 	Extends: Phaser.Scene,
@@ -152,11 +153,21 @@ var Space = new Phaser.Class({
 		if (this.w == 1){
 		if (this.bads.length == 0){
 			this.random = Phaser.Math.Between(3, 8);
+			if(hs >= 20){
+			var faster = 70
+			}else{
+				faster = 50;
+			}
+			if(hs >= 80){
+			var faster = 100
+			}
+			
 			for (var gb3 = 0; gb3 < this.random; gb3++){
 				this.bads.push(this.physics.add.sprite(100 + gb3 * 90, 0, 'shipB'));
 				this.bads[gb3].setAngle(180);
-				this.bads[gb3].setVelocityY(50);
+				this.bads[gb3].setVelocityY(faster);
 			}
+			
 		}}
 		if (this.r.isDown){
 			hs.toString();
